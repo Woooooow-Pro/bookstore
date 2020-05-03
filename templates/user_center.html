@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block static_side_bar %}
+    mdui-drawer-body-left
+{% endblock %}
+
+{% block static_bottom_navi %}
+    mdui-bottom-nav-fixed
+{% endblock %}
+
+{% block content %}
+{#    要改写的#}
+<div class="mdui-drawer mdui-drawer-open mdui-shadow-5" id="main-drawer">
+  <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+
+    <div class="mdui-collapse-item ">
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">library_books</i>
+        <div class="mdui-list-item-content">Category</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list">
+        <a href="{% url 'library:list_by_cate' 0 %}" class="mdui-list-item mdui-ripple">All</a>
+          {% for cate in category %}
+              <a href="{% url 'library:list_by_cate' cate.cate_id %}" class="mdui-list-item mdui-ripple" >{{ cate.name }}</a>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mdui-container">
+    {% block user_center_content %}
+    {% endblock %}
+</div>
+
+
+
+<div class="mdui-bottom-nav">
+    {% block bottom_navi %}
+    {% endblock %}
+</div>
+{% block dialog %}{% endblock %}
+
+
+{% endblock %}

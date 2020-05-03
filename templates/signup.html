@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/css/mdui.min.css">
+    <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
+    <link rel="stylesheet" href="/static/css/uikit.min.css" />
+    <script src="/static/js/uikit.min.js"></script>
+    <script src="/static/js/uikit-icons.min.js"></script>
+    <title>Sign Up</title>
+</head>
+<body id="login_background">
+
+<form method="post" action="{% url 'login:signup' %}" >
+    {% csrf_token %}
+    <div class="mdui-card" id="login_form">
+
+    <div class="mdui-card-header">
+        <h1 class="mdui-card-primary-title mdui-text-center" id="login_title">Sign up</h1>
+    </div>
+
+    <div class="mdui-card-content">
+
+        <div class="mdui-textfield mdui-textfield-floating-label">
+            <label class="mdui-textfield-label"  style="font-size: small">Username</label>
+            <input name="username" class="mdui-textfield-input" required/>
+            {% if message1 %}
+            <div class="mdui-textfield-helper" style="color: #C62828">{{ message1 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mdui-textfield mdui-textfield-floating-label ">
+            <label class="mdui-textfield-label"  style="font-size: small">Phone</label>
+            <input name="phone" class="mdui-textfield-input" type="tel" required/>
+            {% if message3 %}
+            <div class="mdui-textfield-helper" style="color: #C62828">{{ message3 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mdui-textfield mdui-textfield-floating-label ">
+            <label class="mdui-textfield-label"  style="font-size: small">Email</label>
+            <input name="email" class="mdui-textfield-input" type="email" required/>
+{#            <div class="mdui-textfield-error">Wrong type</div>#}
+            {% if message2 %}
+            <div class="mdui-textfield-helper" style="color: #C62828">{{ message2 }}</div>
+            {% endif %}
+        </div>
+
+        <div class="mdui-textfield mdui-textfield-floating-label">
+            <label class="mdui-textfield-label" style="font-size: small">Password</label>
+            <input class="mdui-textfield-input" type="password" name="password" pattern="^.*(?=.{6,})(?=.*[a-z]).*$" required/>
+            <div class="mdui-textfield-error">Make sure it's at least 8 characters include a lowercase letter</div>
+            <div class="mdui-textfield-helper" style="color: #C62828">At least 8 characters include a lowercase letter</div>
+        </div>
+
+        <div class="mdui-row mdui-m-t-2 mdui-m-b-0">
+            <button class="mdui-btn mdui-btn-raised mdui-ripple  mdui-color-blue-accent mdui-center"
+                    style="width: 100%" type="submit">Create account</button>
+        </div>
+    </div>
+</div>
+</form>
+</body>
+</html>
+
+
+
+<style>
+    #login_background{
+        background-image: url("../static/common/Asuka2.jpg");
+        background-position: center;
+        background-size: cover;
+        position: fixed;
+        height: 100%;
+        width: 100%;
+    }
+    #login_form{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 15px;
+        background-clip: padding-box;
+        width: 400px;
+        padding: 35px 35px 15px 35px;
+        background: #ffffff;
+        border: 1px solid #2c3e50;
+        box-shadow: 0 0 15px #2c3e50;
+    }
+    #login_title{
+        margin: 20px auto 20px auto;
+        text-align: center;
+        color: black;
+    }
+</style>

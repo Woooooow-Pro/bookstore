@@ -1,0 +1,56 @@
+{% extends 'user_center.html' %}
+
+{% block user_center_content %}
+    <div class="mdui-table-fluid" style="margin-top: 20px">
+        <table class="mdui-table mdui-table-hoverable">
+            <thead>
+                <tr>
+                    <th>Cover</th>
+                    <th>ISBN</th>
+                    <th>Title</th>
+                    <th>Quantity</th>
+                    <th>Price / RMB</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for order in orders %}
+                <tr>
+                    <td>
+                        <img src="../../{{ order.book.cover }}" class="uk-preserve-width" width="80" alt="">
+                    </td>
+                    <td>
+                        <a href="{% url 'library:book_detail' order.book.ISBN%}">
+                            {{ order.book.ISBN }}
+                        </a>
+                    </td>
+                    <td>{{ order.book.title }}</td>
+                    <td>{{ order.quantity }}</td>
+                    <td>{{ order.book.price }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block bottom_navi %}
+    <div class="mdui-toolbar-spacer"></div>
+    <button class="mdui-btn" disabled style="font-weight: 700; font-style: italic; font-size: x-large; color: #080808">Summary: {{ summary }}</button>
+{#    <p class="mdui-center" style="font-weight: 700; font-style: italic; font-size: x-large; margin-bottom: 15px">Summary: {{ summary }}</p>#}
+    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-color-theme-accent" type="button" mdui-dialog="{target: '#exampleDialog'}">Check Out</button>
+{% endblock %}
+
+{% block dialog %}
+    <div class="mdui-dialog" id="exampleDialog">
+{#        <div class="mdui-dialog-title">Summary:   {{ summary }}</div>#}
+        <div class="mdui-dialog-title">
+            <img class="mdui-valign" src="../../static/common/alipay.jpg" width="320" alt="" style="margin-left: 25%; margin-right: 25%">
+        </div>
+        <div class="mdui-dialog-actions">
+            <button class="mdui-btn mdui-ripple" mdui-dialog-close>Cancel</button>
+            <a href="{% url 'library:pay' %}">
+                <button class="mdui-btn mdui-ripple">Confirm</button>
+            </a>
+        </div>
+    </div>
+{% endblock %}

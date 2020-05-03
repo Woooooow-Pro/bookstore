@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="mdui-container">
+        <div class="mdui-row">
+            <div class="mdui-col-xs-12">
+            <div class="mdui-col-xs-7 mdui-shadow-1">
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-8 mdui-col-offset-xs-2">
+                        <img class="" src="../../{{ book.cover }}">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mdui-col-xs-4 mdui-col-offset-xs-1 mdui-typo">
+                <h2 style="text-transform:uppercase;">{{ book.title }}</h2>
+                <h5>Author: {{ book.author }}
+                    <br/>
+                    Publisher: {{ book.publisher }}
+                    Publish Date: {{ book.publish_date }}</h5>
+                <div class="mdui-divider"></div>
+                <h5>INFO: </h5>
+                <p>
+                    {{ book.advertise }}
+                </p>
+                <div class="mdui-divider"></div>
+                <h3>RMB: {{ book.price }}</h3>
+                <h4>
+                    <span>Qty:</span>
+                </h4>
+                <form class="mdui-valign" method="post" action="{% url 'library:add_to_cart' book.ISBN%}">
+                    {% csrf_token %}
+                    <input class="uk-input uk-form-blank uk-form-width-medium mdui-shadow-1" type="number" name="amount" value="1" min="1" step="1"/>
+                    <div style="margin-left: 10px">
+                    <button class="mdui-btn mdui-btn-block mdui-color-theme-accent mdui-ripple mdui-btn-raised">ADD TO CART</button>
+                    </div>
+                </form>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}

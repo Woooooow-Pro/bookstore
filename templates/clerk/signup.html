@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/css/mdui.min.css">
+    <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
+    <link rel="stylesheet" href="/static/css/uikit.min.css" />
+    <script src="/static/js/uikit.min.js"></script>
+    <script src="/static/js/uikit-icons.min.js"></script>
+    <title>Sign Up</title>
+</head>
+<body id="login_background">
+
+<form method="post" action="{% url 'clerk:signup' %}" >
+    {% csrf_token %}
+    <div class="mdui-card" id="login_form">
+
+    <div class="mdui-card-header">
+        <h1 class="mdui-card-primary-title mdui-text-center" id="login_title">Change Password</h1>
+    </div>
+
+    <div class="mdui-card-content">
+
+        <div class="mdui-textfield mdui-textfield-floating-label">
+            <label class="mdui-textfield-label" style="font-size: small">Password</label>
+            <input class="mdui-textfield-input" type="password" name="password1" pattern="^.*(?=.{6,})(?=.*[a-z]).*$" required/>
+            <div class="mdui-textfield-error">Make sure it's at least 8 characters include a lowercase letter</div>
+            <div class="mdui-textfield-helper" style="color: #C62828">At least 8 characters include a lowercase letter</div>
+        </div>
+
+        <div class="mdui-textfield mdui-textfield-floating-label">
+            <label class="mdui-textfield-label" style="font-size: small">Confirm Your Password</label>
+            <input class="mdui-textfield-input" type="password" name="password2" pattern="^.*(?=.{6,})(?=.*[a-z]).*$" required/>
+        </div>
+
+        <div class="mdui-row mdui-m-t-2 mdui-m-b-0">
+            <button class="mdui-btn mdui-btn-raised mdui-ripple  mdui-color-blue-accent mdui-center"
+                    style="width: 100%" type="submit">Confirm</button>
+        </div>
+    </div>
+</div>
+</form>
+</body>
+</html>
+
+
+
+<style>
+    #login_background{
+        background-image: url("/static/common/Asuka2.jpg");
+        background-position: center;
+        background-size: cover;
+        position: fixed;
+        height: 100%;
+        width: 100%;
+    }
+    #login_form{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 15px;
+        background-clip: padding-box;
+        width: 400px;
+        padding: 35px 35px 15px 35px;
+        background: #ffffff;
+        border: 1px solid #2c3e50;
+        box-shadow: 0 0 15px #2c3e50;
+    }
+    #login_title{
+        margin: 20px auto 20px auto;
+        text-align: center;
+        color: black;
+    }
+</style>

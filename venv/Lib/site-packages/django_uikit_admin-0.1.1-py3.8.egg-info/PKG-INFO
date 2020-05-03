@@ -1,0 +1,48 @@
+Metadata-Version: 1.1
+Name: django-uikit-admin
+Version: 0.1.1
+Summary: A modern grid based skin for Django built-in administration interface.
+Home-page: https://github.com/epi-log/django-uikit-admin
+Author: Nathan Bigaignon, Max Prudhomme
+Author-email: nathanbigaignon@gmail.com
+License: BSD License
+Description: =====
+        Django Uikit Admin
+        =====
+        
+        Django Uikit Admin is a modern grid based skin for Django built-in administration interface.
+        
+        Detailed documentation is in the "docs" directory.
+        
+        Quick start
+        -----------
+        
+        1. Install Django Uikit Admin using pip::
+        
+            pip install django-uikit-admin
+        
+        2. Add "uikit_admin" to your INSTALLED_APPS setting like this::
+        
+            INSTALLED_APPS = [
+                'uikit_admin',
+                ...
+            ]
+        
+        3. Run `python manage.py migrate` to create the polls models.
+        
+        4. Start the development server and visit http://127.0.0.1:8000/admin/
+           (you'll need the Admin app enabled).
+        
+Platform: UNKNOWN
+Classifier: Environment :: Web Environment
+Classifier: Framework :: Django
+Classifier: Framework :: Django :: 1.8
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.4
+Classifier: Programming Language :: Python :: 3.5
+Classifier: Topic :: Internet :: WWW/HTTP
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content

@@ -1,0 +1,74 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1">
+    <link rel="stylesheet" href="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/css/mdui.min.css">
+    <script src="//cdnjs.loli.net/ajax/libs/mdui/0.4.3/js/mdui.min.js"></script>
+    <link rel="stylesheet" href="/static/css/uikit.min.css" />
+    <script src="/static/js/uikit.min.js"></script>
+    <script src="/static/js/uikit-icons.min.js"></script>
+    {% block script %}{% endblock %}
+    {% block css %}{% endblock %}
+    <title>{% block title %}Title{% endblock %}</title>
+</head>
+
+<body class="mdui-appbar-with-toolbar mdui-theme-primary-indigo mdui-theme-accent-pink mdui-loaded {% block static_bottom_navi %}{% endblock %}">
+
+    <header class="mdui-appbar mdui-appbar-fixed mdui-color-indigo mdui-text-color-white-icon mdui-shadow-7">
+        <div class="mdui-toolbar mdui-color-theme">
+
+            <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#main-drawer', swipe: true}">
+                <i class="mdui-icon material-icons">menu</i>
+            </span>
+
+            <a href="{% url 'clerk:index' %}" class="mdui-btn mdui-btn-icon mdui-ripple-white" mdui-tooltip="{content: 'Home'}">
+                <i class="mdui-icon material-icons">home</i>
+            </a>
+            <div class="mdui-toolbar-spacer"></div>
+
+{#            等下要加入的查询功能#}
+{#            <form method="post" action="{% url 'library:search_result' %}">#}
+{#                {% csrf_token %}#}
+{#                <input class="mdui-textfield-input mdui-text-color-white " type="text" name="keyword" placeholder="Search..."/>#}
+{#            </form>#}
+
+{#            或许会加入的 user center#}
+{#            <a href="{% url 'library:cart' %}" class="mdui-btn mdui-btn-icon" mdui-tooltip="{content: 'Cart'}">#}
+{#                <i class="mdui-icon material-icons mdui-ripple-white">shopping_cart</i>#}
+{#            </a>#}
+
+            <a href="{% url 'clerk:logout' %}" class="mdui-btn mdui-btn-icon mdui-ripple-white" mdui-tooltip="{content: 'Log out'}">
+                <i class="mdui-icon material-icons mdui-ripple-white">exit_to_app</i>
+            </a>
+        </div>
+    </header>
+
+    <div class="mdui-drawer mdui-drawer-close mdui-shadow-5" id="main-drawer">
+        <div class="mdui-list " mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+            {% for role in roles %}
+            <div class="mdui-collapse-item ">
+                <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+                    <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">more_horiz</i>
+                    <div class="mdui-list-item-content">{{ role.menu_name }}</div>
+                    <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+                </div>
+                <div class="mdui-collapse-item-body mdui-list">
+                    {% for sub in role.get_sub_menu %}
+                        <a href="{% url 'clerk:index' %}{{ role.role_menu_url }}/{{ sub.sub_menu_url }}/" class="mdui-list-item mdui-ripple">{{ sub.name }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="mdui-container">
+    {% block content %}
+    {% endblock %}
+    </div>
+
+</body>
+</html>

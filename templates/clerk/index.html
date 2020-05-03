@@ -1,0 +1,70 @@
+{% extends 'clerk/clerk_basic.html' %}
+{% block script %}
+    <script src="http://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+{% endblock %}
+
+{% block content %}
+    <div class="mdui-valign mdui-center" id="container" style="width: auto; height: auto; margin: 0 auto; top: 50%; position: fixed;
+        left: 50%;
+        transform: translate(-50%, -50%);"></div>
+    <script language="JavaScript">
+$(document).ready(function() {
+   let chart = {
+       plotBackgroundColor: null,
+       plotBorderWidth: 0,
+       plotShadow: false
+   };
+   let title = {
+      text: 'Browser<br>shares',
+      align: 'center',
+      verticalAlign: 'middle',
+      y: 50
+   };
+   let tooltip = {
+      pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+   };
+   let plotOptions = {
+      pie: {
+         dataLabels: {
+            enabled: true,
+            distance: -50,
+            style: {
+               fontWeight: 'bold',
+               color: 'white',
+               textShadow: '0px 1px 2px black'
+            }
+         },
+         startAngle: -90,
+         endAngle: 90,
+         center: ['50%', '75%']
+      }
+   };
+   let series= [{
+      type: 'pie',
+      name: 'General Ledger',
+      innerSize: '55%',
+      data: [
+          ['Sales',       {{ sold }}],
+          ['Expenditure',   {{ buy }}],
+         {
+            name: 'Others',
+            y: 0.7,
+            dataLabels: {
+               enabled: false
+            }
+         }
+      ]
+   }];
+
+   let json = {};
+   json.chart = chart;
+   json.title = title;
+   json.tooltip = tooltip;
+   json.series = series;
+   json.plotOptions = plotOptions;
+   $('#container').highcharts(json);
+});
+</script>
+{% endblock %}
+

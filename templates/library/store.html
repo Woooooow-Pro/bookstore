@@ -1,0 +1,29 @@
+{% extends 'library/store_base.html' %}
+{% load staticfiles %}
+
+{% block content_store %}
+    {% for book in books %}
+        <a href="{% url 'library:book_detail' book.ISBN %}">
+        <div class="mdui-card mdui-hoverable" style="width: 156px; margin-bottom: 20px; float: left; margin-right: 25px; margin-top: 10px">
+            <div class="mdui-card-media"
+            style="width: 150px;
+            height: 210px;
+            margin-left: 3px;
+            margin-right: 3px;
+            overflow: hidden;
+            cursor: pointer;">
+                    <img src="{% block store-image-src %}../../../{% endblock %}{{ book.cover }}"
+                    style="width: 150px;
+                    height: 210px;"
+                    />
+            </div>
+
+            <div class="mdui-card-primary">
+                <div class="mdui-card-primary-title">{{ book.title }}</div>
+                <div class="mdui-card-primary-subtitle">{{ book.author }}</div>
+                <div class="mdui-card-primary-subtitle">{{ book.publisher }}</div>
+            </div>
+        </div>
+        </a>
+    {% endfor %}
+{% endblock %}

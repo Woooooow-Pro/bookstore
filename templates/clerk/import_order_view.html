@@ -1,0 +1,77 @@
+{% extends 'clerk/clerk_basic.html' %}
+
+{% block static_bottom_navi %}
+    mdui-bottom-nav-fixed
+{% endblock %}
+
+{% block content %}
+    <div class="mdui-table-fluid" style="margin-top: 20px">
+        <table class="mdui-table mdui-table-hoverable">
+            <thead>
+            <tr>
+                <th>Cover</th>
+                <th>ISBN</th>
+                <th>Title</th>
+                <th>Inventory</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for b in books %}
+                <tr>
+                    <td>
+                        <img src="../../../../{{ b.cover }}" class="uk-preserve-width" width="80" alt="">
+                    </td>
+                    <td>{{ b.ISBN }}</td>
+                    <td>{{ b.title }}</td>
+                    <td>{{ b.inventory }}</td>
+                    <td>
+                        <a class="mdui-ripple" mdui-dialog="{target: '#Editing'}" style="text-decoration:none"><i class="mdui-icon material-icons mdui-ripple-white">add</i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mdui-bottom-nav">
+        <a class="mdui-ripple" mdui-dialog="{target: '#Search'}" style="text-decoration:none"><i class="mdui-icon material-icons mdui-ripple-white">search</i></a>
+        <a class="mdui-ripple" mdui-dialog="{target: '#Editing'}" style="text-decoration:none"><i class="mdui-icon material-icons mdui-ripple-white">library_add</i></a>
+    </div>
+
+    <div class="mdui-dialog" id="Search">
+        <div class="mdui-dialog-title">Search For...</div>
+        <div class="mdui-dialog-content">
+            <form method="post" action="{% url 'clerk:book_edit_view' %}">
+                {% csrf_token %}
+                <input class="mdui-textfield-input " type="text" name="keyword" placeholder="ISBN/Title/Publisher/Date..."/>
+            </form>
+        </div>
+    </div>
+
+    <div class="mdui-dialog" id="Editing">
+        <div class="mdui-dialog-title">Order Form</div>
+        <div class="mdui-dialog-content">
+            <form method="post" action="{% url 'clerk:import_order_view' %}">
+                {% csrf_token %}
+                <label class="mdui-textfield-label">Book</label>
+                <select class="mdui-select" mdui-select name="isbn" style="margin-left: 20%; margin-right: 20%; width: 60%;">
+                    {% for b in books %}
+                        <option value="{{ b.ISBN }}">{{ b.ISBN }}</option>
+                    {% endfor %}
+                </select>
+                <label class="mdui-textfield-label">Quantity</label>
+                <input class="mdui-textfield-input" type="numer" min="0" value="10" name="quantity" required>
+                <label class="mdui-textfield-label">Price</label>
+                <input class="mdui-textfield-input" type="text" name="price"  required>
+
+                <div class="mdui-row mdui-m-t-1 mdui-m-b-1">
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple  mdui-color-blue-accent mdui-center mdui-dialog-close" style="width: 100%" type="submit">Confirm</button>
+                </div>
+                <div class="mdui-row mdui-m-t-1 mdui-m-b-1">
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-center mdui-dialog-cancel" style="width: 100%" type="button">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

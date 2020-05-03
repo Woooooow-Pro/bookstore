@@ -1,0 +1,33 @@
+{% extends 'clerk/clerk_basic.html' %}
+{% block content %}
+        <div class="mdui-table-fluid" style="margin-top: 20px">
+        <table class="mdui-table mdui-table-hoverable">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Sum</th>
+                    <th>Executor</th>
+                    <th>Function</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for f_i in finances_import %}
+                <tr>
+                    <td>{{ f_i.date }}</td>
+                    <td>{{ f_i.sum }}</td>
+                    <td>{{ f_i.person_id }}</td>
+                    <td>Import</td>
+                </tr>
+            {% endfor %}
+            {% for f_s in finances_sold %}
+                <tr>
+                    <td>{{ f_s.date }}</td>
+                    <td>{{ f_s.sum }}</td>
+                    <td>{{ f_s.person_id }}</td>
+                    <td>Sold</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %}Store{% endblock %}
+
+{% block sibe_bar %}
+    <span class="mdui-btn mdui-btn-icon mdui-ripple mdui-ripple-white" mdui-drawer="{target: '#main-drawer', swipe: true}">
+            <i class="mdui-icon material-icons">menu</i>
+    </span>
+{% endblock %}
+
+
+{% block content %}
+<div class="mdui-drawer mdui-drawer-close mdui-shadow-5" id="main-drawer">
+  <div class="mdui-list" mdui-collapse="{accordion: true}" style="margin-bottom: 76px;">
+
+    <div class="mdui-collapse-item ">
+      <div class="mdui-collapse-item-header mdui-list-item mdui-ripple">
+        <i class="mdui-list-item-icon mdui-icon material-icons mdui-text-color-blue">library_books</i>
+        <div class="mdui-list-item-content">Category</div>
+        <i class="mdui-collapse-item-arrow mdui-icon material-icons">keyboard_arrow_down</i>
+      </div>
+      <div class="mdui-collapse-item-body mdui-list">
+        <a href="{% url 'library:list_by_cate' 0 %}" class="mdui-list-item mdui-ripple">All</a>
+          {% for cate in category %}
+              <a href="{% url 'library:list_by_cate' cate.cate_id %}" class="mdui-list-item mdui-ripple">{{ cate.name }}</a>
+          {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+    <div class="mdui-container doc-container">
+    {% block content_store %}{% endblock %}
+    </div>
+
+{% endblock %}
