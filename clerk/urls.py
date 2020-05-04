@@ -14,7 +14,7 @@ urlpatterns = [
     # book_editing
     path('function/1/', views.book_edit_view),
     path('function/1/0/', views.book_edit_view, name='book_edit_view'),
-    # path('function/1/0/<str:isbn>/', views.do_edit, name='book_edit_form'),
+    path('function/1/0/<str:isbn>/', views.do_edit, name='book_edit_form'),
     # path('function/1/1/', views.add_category, name='add_category'),
 
     # add import order
@@ -32,6 +32,9 @@ urlpatterns = [
 
     # maybe User manage **
     # maybe clerk manage *
+    path('function/4/0/', views.clerk_manage, name='clerk_manage'),
+    path('function/4/0/<str:clerk_id>/', views.clerk_edit, name='clerk_edit'),
+    # path('function/4/0/<int:clerk_id>/', views.clerk_edit),
     # maybe account manage ***
 
     # logout

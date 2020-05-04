@@ -1,0 +1,80 @@
+{% extends 'clerk/clerk_basic.html' %}
+
+{% block content %}
+<form method="post" action="{% url 'clerk:clerk_edit' clerk.clerk_id %}" >
+    {% csrf_token %}
+    <div class="mdui-card" id="login_form">
+
+    <div class="mdui-card-header">
+        <h1 class="mdui-card-primary-title mdui-text-center" id="login_title">Edit</h1>
+    </div>
+
+    <div class="mdui-card-content">
+
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label"  style="font-size: small">
+                Clerk_id
+            </label>
+            <input name="clerk_id" class="mdui-textfield-input" value="{{ clerk.clerk_id }}" disabled/>
+        </div>
+
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label" style="font-size: small">Phone</label>
+            <input class="mdui-textfield-input" type="tel" name="phone" value="{{ clerk.phone }}" required/>
+        </div>
+
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label" style="font-size: small">Email</label>
+            <input class="mdui-textfield-input" type="email" name="email" value="{{ clerk.email }}" required/>
+        </div>
+
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label" style="font-size: small">Active</label>
+            <input type="checkbox" value="TRUE" name="active"/>
+        </div>
+
+        <label class="mdui-textfield-label" style="font-size: small">Add Function</label>
+        <select class="mdui-select" name="add_menu_url" style="margin-left: 20%; margin-right: 20%; width: 60%;">
+            {% for add in clerk_add %}
+                <option value="{{ add.role_menu_url }}">{{ add.menu_name }}</option>
+            {% endfor %}
+            <option value="x">None</option>
+        </select>
+
+        <label class="mdui-textfield-label" style="font-size: small">Delete Function</label>
+        <select class="mdui-select"  name="del_menu_url" style="margin-left: 20%; margin-right: 20%; width: 60%;">
+            {% for del in clerk_delete %}
+                <option value="{{ del.role_menu_url }}">{{ del.menu_name }}</option>
+            {% endfor %}
+            <option value="x">None</option>
+        </select>
+
+        <div class="mdui-row mdui-m-t-1 mdui-m-b-1">
+            <button class="mdui-btn mdui-btn-raised mdui-ripple  mdui-color-blue-accent mdui-center"
+                    style="width: 100%" type="submit">Confirm</button>
+        </div>
+    </div>
+</div>
+</form>
+{% endblock %}
+
+<style>
+    #login_form{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 15px;
+        background-clip: padding-box;
+        width: 300px;
+        padding: 35px 35px 15px 35px;
+        background: #ffffff;
+        border: 1px solid #2c3e50;
+        box-shadow: 0 0 15px #2c3e50;
+    }
+    #login_title{
+        margin: 0 auto 40px auto;
+        text-align: center;
+        color: black;
+    }
+</style>

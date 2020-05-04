@@ -1,0 +1,88 @@
+{% extends 'clerk/clerk_basic.html' %}
+
+{% block content %}
+<form enctype="multipart/form-data" method="post" action="{% url 'clerk:book_edit_form' book.ISBN %}" >
+    {% csrf_token %}
+    <div class="mdui-card" id="login_form">
+
+    <div class="mdui-card-header">
+        <h1 class="mdui-card-primary-title mdui-text-center" id="login_title">Edit</h1>
+    </div>
+
+    <div class="mdui-card-content">
+
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label"  style="font-size: small">ISBN</label>
+            <input class="mdui-textfield-input " type="text" name="isbn" value="{{ book.ISBN }}" disabled required/>
+        </div>
+
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label" style="font-size: small">Title</label>
+            <input class="mdui-textfield-input" type="tel" name="title" value="{{ book.title }}" required/>
+        </div>
+
+        <label class="mdui-textfield-label" style="font-size: small">Category</label>
+        <select class="mdui-select" name="cate" style="margin-left: 20%; margin-right: 20%; width: 60%;">
+            {% for cate in category %}
+                <option value="{{ cate.cate_id }}">{{ cate.name }}</option>
+            {% endfor %}
+        </select>
+
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label" style="font-size: small">Author</label>
+            <input class="mdui-textfield-input" type="text" name="author" value="{{ book.author }}" required/>
+        </div>
+
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label" style="font-size: small">Publisher</label>
+            <input class="mdui-textfield-input" type="text" name="publisher" value="{{ book.publisher }}" required/>
+        </div>
+
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label">Publish Date</label>
+            <input class="mdui-textfield-input" type="date" name="publish_date" value="{{ book.publish_date }}" required>
+        </div>
+
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label">Advertise</label>
+            <input class="mdui-textfield-input" type="text" name="advertise" value="{{ book.advertise }}">
+        </div>
+
+        <div class="mdui-textfield">
+            <label class="mdui-textfield-label">Price</label>
+            <input class="mdui-textfield-input" type="text" name="price" value="{{ book.price }}">
+        </div>
+
+        <br/>
+        <label class="mdui-textfield-label">Cover</label>
+        <input type="file" name="cover">
+
+        <div class="mdui-row mdui-m-t-1 mdui-m-b-1">
+            <button class="mdui-btn mdui-btn-raised mdui-ripple  mdui-color-blue-accent mdui-center"
+                    style="width: 100%" type="submit">Confirm</button>
+        </div>
+    </div>
+</div>
+</form>
+{% endblock %}
+
+<style>
+    #login_form{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 15px;
+        background-clip: padding-box;
+        width: 300px;
+        padding: 35px 35px 15px 35px;
+        background: #ffffff;
+        border: 1px solid #2c3e50;
+        box-shadow: 0 0 15px #2c3e50;
+    }
+    #login_title{
+        margin: 0 auto 40px auto;
+        text-align: center;
+        color: black;
+    }
+</style>

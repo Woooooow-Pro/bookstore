@@ -11,6 +11,7 @@ from library.models import Books, Category
 from finance.models import Finance
 from finance.views import finance_summary
 import hashlib
+from django.utils.datastructures import MultiValueDictKeyError
 
 
 # Create your views here.
@@ -97,10 +98,11 @@ def book_edit_view(request):
     if request.method == 'POST':
         try:
             key = request.POST['keyword']
-            if len(key):
+            if len(key) > 0:
                 books = Books.objects.filter(
                     Q(ISBN__contains=key) | Q(title__contains=key) | Q(author__contains=key) | Q(
                         publisher__contains=key)).order_by('inventory')
+                return render(request, 'clerk/book_edit.html', locals())
         except KeyError:
             isbn = request.POST['isbn']
             title = request.POST['title']
@@ -139,6 +141,38 @@ def book_edit_view(request):
             return redirect('clerk:book_edit_view')
     books = Books.objects.all().order_by('inventory')
     return render(request, 'clerk/book_edit.html', locals())
+
+
+def do_edit(request, isbn):
+    clerk_login(request)
+    roles = get_all_permission(request)
+    category = get_all_cate()
+    try:
+        book = Books.objects.get(ISBN=isbn)
+    except Books.DoesNotExist:
+        return redirect('clerk:book_edit_view')
+    if request.method == 'POST':
+        book.title = request.POST['title']
+        book.author = request.POST['author']
+        book.publisher = request.POST['publisher']
+        book.publish_date = request.POST['publish_date']
+        book.advertise = request.POST['advertise']
+        book.price = request.POST['price']
+        book.cate_id = Category.objects.get(cate_id=request.POST['cate'])
+        cover = request.FILES['cover']
+        book.cover = cover
+        # print(cate_id)
+        # book.title = title
+        # book.author = author
+        # book.advertise = advertise
+        # book.publisher = publisher
+        # book.publish_date = publish_date
+        # book.price = price
+        # book.cover = cover
+        # book.cate_id = cate_id
+        book.save()
+        return redirect('clerk:book_edit_view')
+    return render(request, 'clerk/do-edit.html', locals())
 
 
 def import_order_view(request):
@@ -205,6 +239,77 @@ def check_finance_detail(request):
     return render(request, 'clerk/finance_detail.html', locals())
 
 
+def clerk_manage(request):
+    clerk_login(request)
+    clerks = Clerk.objects.all().order_by('c_time')
+    roles = Role.objects.all()
+    if request.method == 'POST':
+        clerk_id = request.POST['clerk_id']
+        phone = request.POST['phone']
+        email = request.POST['email']
+        gender = request.POST['gender']
+        try:
+            clerk = Clerk.objects.get(clerk_id=clerk_id)
+            message = 'Clerk Id Has Been Used'
+            return render(request, 'clerk/clerk_manage_view.html', locals())
+        except Clerk.DoesNotExist:
+            c = Clerk.objects.create(
+                clerk_id=clerk_id,
+                phone=phone,
+                email=email,
+                gender=gender
+            )
+            c.save()
+    return render(request, 'clerk/clerk_manage_view.html', locals())
+
+
+def clerk_edit(request, clerk_id):
+    clerk_login(request)
+    clerk_id = str(clerk_id)
+    clerk = Clerk.objects.get(clerk_id=clerk_id)
+    roles = Role.objects.all()
+    clerk_roles = Clerk_Role.objects.filter(clerk=clerk)
+    clerk_delete = []
+    clerk_add = []
+    for cr in clerk_roles:
+        clerk_delete.append(cr.role)
+    for r in roles:
+        if r not in clerk_delete:
+            clerk_add.append(r)
+
+    if request.method == 'POST':
+        clerk.phone = request.POST['phone']
+        clerk.email = request.POST['email']
+        # clerk.gender = request.POST['gender']
+        try:
+            request.POST['active'] == 'TRUE'
+            clerk.active = True
+        except MultiValueDictKeyError:
+            clerk.active = False
+        clerk.save()
+        try:
+            if request.POST['add_menu_url'] == 'x':
+                pass
+            else:
+                role_add = Role.objects.get(role_menu_url=request.POST['add_menu_url'])
+                clerk_role_add = Clerk_Role.objects.create(role=role_add, clerk=clerk)
+                clerk_role_add.save()
+        except MultiValueDictKeyError:
+            pass
+        try:
+            if request.POST['del_menu_url'] == 'x':
+                pass
+            else:
+                role_del = Role.objects.get(role_menu_url=request.POST['del_menu_url'])
+                clerk_role_del = Clerk_Role.objects.get(role=role_del, clerk=clerk)
+                clerk_role_del.delete()
+        except MultiValueDictKeyError:
+            pass
+
+        return redirect('clerk:clerk_manage')
+    return render(request, 'clerk/clerk_edit.html', locals())
+
+
 # 一些测试函数
 def clerk_login(request):
     if request.session.get('has_login'):
@@ -219,11 +324,16 @@ def get_all_permission(request):
     role = []
     for cr in clerk_role:
         role.append(cr.role)
+    role.sort(key=sort_key)
     return role
 
 
+def sort_key(role):
+    return role.role_menu_url
+
+
 def logout(request):
-    if request.session['has_login'] is None:
+    if request.session['clerk_login'] is None:
         return redirect('login:login')
     request.session.flush()
     return redirect('clerk:login')

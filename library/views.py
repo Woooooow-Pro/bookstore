@@ -67,6 +67,7 @@ def add_to_cart(request, isbn):
 # cart.html 实现
 def cart_contain(request):
     check_login(request)
+    category = get_all_cate()
     user = User.objects.get(username=request.session['username'])
     orders = user.get_all_order()
     content = {

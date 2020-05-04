@@ -1,0 +1,72 @@
+{% extends 'clerk/clerk_basic.html' %}
+
+{% block static_bottom_navi %}
+    mdui-bottom-nav-fixed
+{% endblock %}
+
+{% block content %}
+    <div class="mdui-table-fluid" style="margin-top: 20px">
+        <table class="mdui-table mdui-table-hoverable">
+            <thead>
+            <tr>
+                <th>Clerk Id</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Gender</th>
+                <th>Active</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for c in clerks %}
+                <tr>
+                    <td>{{ c.clerk_id }}</td>
+                    <td>{{ c.email }}</td>
+                    <td>{{ c.phone }}</td>
+                    <td>{{ c.gender }}</td>
+                    <td>{% if c.active %}TRUE{% else %}FALSE{% endif %}</td>
+                    <td>
+                        <a class="mdui-ripple"  style="text-decoration:none" href="{% url 'clerk:clerk_edit' c.clerk_id %}"><i class="mdui-icon material-icons mdui-ripple-white">edit</i></a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="mdui-bottom-nav">
+        <a class="mdui-ripple" mdui-dialog="{target: '#Editing'}" style="text-decoration:none"><i class="mdui-icon material-icons mdui-ripple-white">library_add</i></a>
+    </div>
+
+    <div class="mdui-dialog" id="Editing">
+        <div class="mdui-dialog-title">Edit Form</div>
+        <div class="mdui-dialog-content">
+            <form enctype="multipart/form-data" method="post" action="{% url 'clerk:clerk_manage' %}">
+                {% csrf_token %}
+                <label class="mdui-textfield-label">Clerk ID</label>
+                <input class="mdui-textfield-input " type="text" name="clerk_id" required/>
+                <br/>
+                <label class="mdui-textfield-label">Phone</label>
+                <input class="mdui-textfield-input" type="text" name="phone" required>
+                <br/>
+                <label class="mdui-textfield-label">Email</label>
+                <input class="mdui-textfield-input" type="text" name="email"  required>
+                <br/>
+                <label class="mdui-textfield-label">Gender</label>
+                <select class="mdui-select" mdui-select name="gender" style="margin-left: 20%; margin-right: 20%; width: 60%;">
+                    <option value="Male">MALE</option>
+                    <option value="Female">FEMALE</option>
+                    <option value="Other">OTHER</option>
+                </select>
+                <br/>
+
+                <div class="mdui-row mdui-m-t-1 mdui-m-b-1">
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple  mdui-color-blue-accent mdui-center mdui-dialog-close" style="width: 100%" type="submit">Create</button>
+                </div>
+                <div class="mdui-row mdui-m-t-1 mdui-m-b-1">
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-center mdui-dialog-cancel" style="width: 100%" type="button">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

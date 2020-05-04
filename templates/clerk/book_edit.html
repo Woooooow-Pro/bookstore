@@ -26,7 +26,7 @@
                     <td>{{ b.title }}</td>
                     <td>{{ b.inventory }}</td>
                     <td>
-                        <a class="mdui-ripple" mdui-dialog="{target: '#Editing'}" style="text-decoration:none"><i class="mdui-icon material-icons mdui-ripple-white">edit</i></a>
+                        <a class="mdui-ripple" href="{% url 'clerk:book_edit_form' b.ISBN%}" style="text-decoration:none"><i class="mdui-icon material-icons mdui-ripple-white">edit</i></a>
                     </td>
                 </tr>
             {% endfor %}
@@ -44,7 +44,7 @@
         <div class="mdui-dialog-content">
             <form method="post" action="{% url 'clerk:book_edit_view' %}">
                 {% csrf_token %}
-                <input class="mdui-textfield-input " type="text" name="keyword" placeholder="ISBN/Title/Publisher/Date..."/>
+                <input class="mdui-textfield-input " type="text" name="keyword" placeholder="ISBN / Title / Publisher / Date..."/>
             </form>
         </div>
     </div>
@@ -55,18 +55,18 @@
             <form enctype="multipart/form-data" method="post" action="{% url 'clerk:book_edit_view' %}">
                 {% csrf_token %}
                 <label class="mdui-textfield-label">ISBN</label>
-                <input class="mdui-textfield-input " type="text" name="isbn" {% if add %}disabled{% endif %} required/>
+                <input class="mdui-textfield-input " type="text" name="isbn"  {% if add %}disabled{% endif %} required/>
                 <label class="mdui-textfield-label">Title</label>
                 <input class="mdui-textfield-input" type="text" name="title" required>
                 <label class="mdui-textfield-label">Category</label>
-                <select class="mdui-select" mdui-select name="cate" style="margin-left: 20%; margin-right: 20%; width: 60%;">
+                <select class="mdui-select" name="cate" style="margin-left: 20%; margin-right: 20%; width: 60%;">
                     {% for cate in category %}
                         <option value="{{ cate.cate_id }}">{{ cate.name }}</option>
                     {% endfor %}
                 </select>
                 <label class="mdui-textfield-label">Author</label>
                 <input class="mdui-textfield-input" type="text" name="author"  required>
-                <label class="mdui-textfield-label">publisher</label>
+                <label class="mdui-textfield-label">Publisher</label>
                 <input class="mdui-textfield-input" type="text" name="publisher" required>
                 <label class="mdui-textfield-label">Publish Date</label>
                 <input class="mdui-textfield-input" type="date" name="publish_date" required>
@@ -75,14 +75,14 @@
                 <label class="mdui-textfield-label">Price</label>
                 <input class="mdui-textfield-input" type="text" name="price" required>
                 <br/>
-                <label class="mdui-textfield-label">File</label>
+                <label class="mdui-textfield-label">Cover</label>
                 <input type="file" name="cover"/>
 
                 <div class="mdui-row mdui-m-t-1 mdui-m-b-1">
                     <button class="mdui-btn mdui-btn-raised mdui-ripple  mdui-color-blue-accent mdui-center mdui-dialog-close" style="width: 100%" type="submit">Confirm</button>
                 </div>
                 <div class="mdui-row mdui-m-t-1 mdui-m-b-1">
-                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-center mdui-dialog-cancel" style="width: 100%" type="button">Confirm</button>
+                    <button class="mdui-btn mdui-btn-raised mdui-ripple mdui-center mdui-dialog-cancel" style="width: 100%" type="button">Cancel</button>
                 </div>
             </form>
         </div>
