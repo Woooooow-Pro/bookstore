@@ -44,7 +44,7 @@
     <div class="mdui-dialog" id="Search">
         <div class="mdui-dialog-title">Search For...</div>
         <div class="mdui-dialog-content">
-            <form method="post" action="{% url 'clerk:book_edit_view' %}">
+            <form method="post" action="{% url 'clerk:order_detail' %}">
                 {% csrf_token %}
                 <input class="mdui-textfield-input " type="text" name="keyword" placeholder="ISBN/Title/Publisher/Date..."/>
             </form>

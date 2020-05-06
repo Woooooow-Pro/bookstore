@@ -48,6 +48,7 @@ def login(req):
         message = "Wrong Password"
     return render(req, "clerk/login.html", locals())
 
+
 @transaction.atomic
 def signup(request):
     if request.session.get('has_login'):
@@ -191,6 +192,7 @@ def import_order_view(request):
                 books = Books.objects.filter(
                     Q(ISBN__contains=key) | Q(title__contains=key) | Q(author__contains=key) | Q(
                         publisher__contains=key)).order_by('inventory')
+                return render(request, 'clerk/import_order_view.html', locals())
         except KeyError:
             book = Books.objects.get(ISBN=request.POST['isbn'])
             quantity = int(request.POST['quantity'])
@@ -216,7 +218,7 @@ def order_detail(request):
             if len(key):
                 books = Books.objects.filter(Q(ISBN__contains=key) | Q(title__contains=key) | Q(author__contains=key) | Q(
                         publisher__contains=key))
-                orders = Import_Order.objects.filter(book__in=books).order_by('inventory')
+                orders = Import_Order.objects.filter(book__in=books)
                 return render(request, 'clerk/order_detail.html', locals())
         except KeyError:
             submit_order(clerk)

@@ -229,7 +229,13 @@ class Finance(models.Model):
 ### 用户功能设计
 
 #### login，signup 界面
-实现了大部分网站类似的 login 和 signup ，密码用 MD5+salt 的形式保存在数据库用户端
+* 实现了大部分网站类似的 login 和 signup ，密码用 MD5+salt 的形式保存在数据库用户端
+  
+![User_login](./static/common/readme/User_login.png)
+
+![user_signup](./static/common/readme/user_signup.png)
+
+----
 
 #### library/index 
 * 书店所有书本的展示，侧边栏加载书籍分类，可以点击不同分类，查看该分类下的书本
@@ -237,36 +243,102 @@ class Finance(models.Model):
 * 点击书本 card 跳转到书本的详细页面，里面有书本的详细内容（下面介绍）
 * 右上角 logout 的标签就是简单的用户退出键，点击后直接退回登录界面
 * 以及旁边的是用户购物车，点击跳转到 cart 中
+  
+  ![library_index](./static/common/readme/index.png)
+
+----
 
 #### library/book_detail
 * 左侧是书籍封面，右侧是书籍的详细信息和购买选项
 * 点击按钮加入购物车
 * ps：本来想在右侧导航栏里写个用户中心什么的，但是这个过于内卷，所以就没去实现了（容易实现，但是没必要去倒腾这种没有实质性提升的功能）
+  
+  ![book detail](./static/common/readme/book-detail.png)
+
+---
 
 #### library/cart
 * 购物车具体内容，用列表的形式展现了购物车内的东西
-* 点击列表右侧 **-** 键，将物品移除购物车
+  
+  ![cart](./static/common/readme/cart.png)
+* 点击列表右侧 **-** 键，将物品移除购物车 ( 这里是没更改前的照片，更改后加上了“垃圾桶” )
 * 点击底部导航栏的 **checkout** 付款，届时会弹出对话框（嗯，就是我的支付宝付款码，没想到吧），点击 confirm 付款成功，跳转回 index 界面
+
+  ![cart pay](./static/common/readme/cart_pay.png)
+
+---
+---
 
 ### Clerk 界面
 
 #### clerk/login， signup
 * clerk 没有显式 signup 界面，只能通过高级管理员注册一个带有初始密码的员工账号，并通过 login 界面输出初始密码后点击 **log in** 才能进入密码修改界面（也就是所谓的 signup）
+  
+  ![clerk login](./static/common/readme/clerk_login.png)
+  clerk login
+
+  ![clerk change password](./static/common/readme/clerk_signup.png)
+  clerk change password
+
+---
 
 #### clerk/index 
 * 所有拥有 clerk 账户的人都能看见的页面， 展现的是公司总账
+  
+  ![clerk index](./static/common/readme/clerk_index.png)
 * 顶部导航栏从左到右分别是：侧边导航栏引出按钮， 主页按钮，退出按钮
+  
+  ![clerk index2](./static/common/readme/clerk_index2.png)
 * 侧边导航栏将根据用户所有的权限动态加载可访问的区域有： 书本管理，增加订单，账单查询，group 添加
+
+---
 
 #### clerk/book edit
 * 列表形式展现书籍现状，点击 edit 键进入书本编辑，点击 + 键弹出对话框增添书籍，点击搜索键对书本模糊查询
+  
+  ![book edit](./static/common/readme/book_edit.png)
 
-#### clerk/order
+  ![book edit form](./static/common/readme/adit_book.png)
+
+  ![add book](./static/common/readme/add_book.png)
+
+---
+
+#### clerk/import
+* 点击 + 好弹出对话框选择要买入的的书本, 其中有选择书本、选择数量和进货的单价（默认如果书店里没有这个书就不能进货，毕竟是电子商城，没库存的书也可以预告对吧）
+  
+  ![import](static/common/readme/import_order.png)
+* 果断的拒绝加入进货中间态这个奇怪的选项（为什么你书店进货是在自己的网页上进货啊？写在网上的这个功能不应该是个记录用的功能嘛？总觉得加入很奇怪没有违和感，就拒绝加入了，嗯）
+* import order detail 里面就是看看自己的进货单之类的，然后可以删除进货单，类似用户 cart 界面，但是不显示总额（因为没必要）, 然后可以查找订单 （ 实现的也是模糊搜索 ）
+  
+  ![import order detail](./static/common/readme/order_detail.png)
+
+---
+
+#### clerk/finance
+* 就是按照时间和类型顺序排放的表单，由于觉得在这里加一个查找键很丑，所以就没加进去 （ 查找特定时间的可以写，但是丑就算了，我室友 wws 的查找函数就是我帮他的，千万别说出去）
+  
+  ![finance](./static/common/readme/finance.png)
+
+
+#### clerk/manage
+* （这个界面最下面那个 + 号是真的丑 ） 点击这个加号增加职员，但是只能是一个没有任何权限，且处于未激活状态的职员。
+  
+  ![clerk manage](./static/common/readme/clerk_edit.png)
+* 点击职员表右侧 edit 符号，进入职员编辑页面，可以增加（删除）职员权限，（别忘了查看职员是否处于激活状态，and不要对没有改过密码的职员激活！）
+  
+  ![clerk manage form](./static/common/readme/clerk_edit_form.png)
 
 
 
 ## 五、特色和创新点
-实现了角色特权分配，以及挂载在自己的服务器上
+* 实现了角色特权分配
+* 在一开始就考虑到事务（ 虽然只是非常粗暴的将事务写在了 views 上）
+* 以及挂载在自己的服务器上 （ 努力实现中 ）
+* 实现了页面自适应（当然我没在手机上登陆过，我仅仅在 google 游览器中按 F12 观察过）
+  
+  ![adapt1](./static/common/readme/adapt1.png)
+  ![adapt2](./static/common/readme/adapt2.png)
 
 
 ## 六、分工
