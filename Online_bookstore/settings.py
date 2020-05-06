@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'login',
     'library',
     'finance',
-    'guardian',
     'clerk'
 ]
 
