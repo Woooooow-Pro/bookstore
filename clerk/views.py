@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import render, redirect
 from .models import Clerk, Role, Import_Order, Clerk_Role, \
@@ -15,6 +16,7 @@ from django.utils.datastructures import MultiValueDictKeyError
 
 
 # Create your views here.
+@transaction.atomic
 def login(req):
     if req.session.get('has_login'):
         return redirect('library:index')
@@ -46,7 +48,7 @@ def login(req):
         message = "Wrong Password"
     return render(req, "clerk/login.html", locals())
 
-
+@transaction.atomic
 def signup(request):
     if request.session.get('has_login'):
         return redirect('library:index')
@@ -81,7 +83,7 @@ def signup(request):
 def index(request):
     clerk_login(request)
     roles = get_all_permission(request)
-    print(roles)
+    # print(roles)
     finance_total = finance_summary()
     sold = finance_total['sold']
     buy = finance_total['buy']
@@ -90,6 +92,7 @@ def index(request):
 
 # 以下所有函数都还没有判断 clerk 级别
 # book-editing
+@transaction.atomic
 def book_edit_view(request):
     clerk_login(request)
 
@@ -143,6 +146,7 @@ def book_edit_view(request):
     return render(request, 'clerk/book_edit.html', locals())
 
 
+@transaction.atomic
 def do_edit(request, isbn):
     clerk_login(request)
     roles = get_all_permission(request)
@@ -175,6 +179,7 @@ def do_edit(request, isbn):
     return render(request, 'clerk/do-edit.html', locals())
 
 
+@transaction.atomic
 def import_order_view(request):
     clerk_login(request)
     roles = get_all_permission(request)
@@ -200,6 +205,7 @@ def import_order_view(request):
 
 
 # 包括了提交订单（到现在才有点明白自己在干啥，我裂开啦~）
+@transaction.atomic
 def order_detail(request):
     clerk_login(request)
     clerk = Clerk.objects.get(clerk_id=request.session['clerk_id'])
@@ -220,6 +226,7 @@ def order_detail(request):
     return render(request, 'clerk/order_detail.html', locals())
 
 
+@transaction.atomic
 def drop_order(request, isbn):
     clerk_login(request)
     clerk = Clerk.objects.get(clerk_id=request.session['clerk_id'])
@@ -239,6 +246,7 @@ def check_finance_detail(request):
     return render(request, 'clerk/finance_detail.html', locals())
 
 
+@transaction.atomic
 def clerk_manage(request):
     clerk_login(request)
     clerks = Clerk.objects.all().order_by('c_time')
@@ -263,6 +271,7 @@ def clerk_manage(request):
     return render(request, 'clerk/clerk_manage_view.html', locals())
 
 
+@transaction.atomic
 def clerk_edit(request, clerk_id):
     clerk_login(request)
     clerk_id = str(clerk_id)

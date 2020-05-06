@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.shortcuts import render, redirect
 from .models import Books, Category
 from login.models import User
@@ -52,6 +53,7 @@ def book_detail(request, ISBN):
         return render(request, 'library/book_detail.html', context)
 
 
+@transaction.atomic
 def add_to_cart(request, isbn):
     check_login(request)
     amount = int(request.POST['amount'])
@@ -70,13 +72,21 @@ def cart_contain(request):
     category = get_all_cate()
     user = User.objects.get(username=request.session['username'])
     orders = user.get_all_order()
-    content = {
-        'orders': orders,
-        'summary': get_summary(orders)
-    }
-    return render(request, 'library/cart.html', content)
+    return render(request, 'library/cart.html', locals())
 
 
+def cat_drop(request, isbn):
+    check_login(request)
+    user = User.objects.get(username=request.session['username'])
+    try:
+        book = Books.objects.get(ISBN=isbn)
+        user.remove_from_order(book)
+    except Books.DoesNotExist:
+        pass
+    return redirect('library:cart')
+
+
+@transaction.atomic
 def do_pay(request):
     check_login(request)
     username = request.session['username']

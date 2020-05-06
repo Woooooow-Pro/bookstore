@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.shortcuts import render, redirect
 from . import models
 import hashlib
@@ -6,6 +7,7 @@ import string
 
 
 # Create your views here.
+@transaction.atomic
 def sign_up(req):
     if req.session.get('has_login'):
         redirect('library:index')

@@ -10,6 +10,7 @@
                     <th>Title</th>
                     <th>Quantity</th>
                     <th>Price / RMB</th>
+                    <th>Drop</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,6 +27,9 @@
                     <td>{{ order.book.title }}</td>
                     <td>{{ order.quantity }}</td>
                     <td>{{ order.book.price }}</td>
+                    <td>
+                    <a class="mdui-ripple" href="{% url 'library:drop' order.book.ISBN %}" style="text-decoration:none"><i class="mdui-icon material-icons mdui-ripple-white">delete</i></a>
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>
