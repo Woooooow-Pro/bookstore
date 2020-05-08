@@ -45,12 +45,18 @@ def sign_up(req):
             password += salt
             hs.update(password.encode())
 
-            user = models.User.objects.create()
-            user.password = hs.hexdigest()
-            user.salt = salt
-            user.username = username
-            user.phone = phone
-            user.email = email
+            user = models.User.objects.create(
+                password=hs.hexdigest(),
+                salt=salt,
+                username=username,
+                phone=phone,
+                email=email
+            )
+            # user.password = hs.hexdigest()
+            # user.salt = salt
+            # user.username = username
+            # user.phone = phone
+            # user.email = email
             user.save()
             return redirect('login:login')
     return render(req, 'signup.html', locals())

@@ -22,7 +22,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '1e%$w2t3lnf*x5vk9zk)g%580rlgt%felm^@a#g%z2g5!=*i49'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['.guanduochen.xyz', '127.0.0.1']
 
@@ -122,6 +122,8 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
+
+STATIC_ROOT = "/static/"
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [

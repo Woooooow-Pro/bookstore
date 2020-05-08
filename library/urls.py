@@ -1,5 +1,7 @@
 from django.urls import path, include
 from . import views
+from django.conf.urls.static import static
+from Online_bookstore import settings
 app_name = 'library'
 
 urlpatterns = [
@@ -13,3 +15,5 @@ urlpatterns = [
     path('cart/drop/<str:isbn>/', views.cat_drop, name='drop'),
     path('pay/', views.do_pay, name='pay'),
 ]
+if not settings.DEBUG:
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

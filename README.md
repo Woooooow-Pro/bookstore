@@ -17,6 +17,10 @@
 
 ## 三、数据库设计
 
+* ERD
+  
+  ![ERD](/static/common/readme/ERD.png)
+
 * 用户相关
 ```python
 #  User 模块
@@ -91,11 +95,10 @@ class User(models.Model):
         ordering = ['c_time']
 
 # 用户购物车
-class Import_Order(models.Model):
-    clerk = models.ForeignKey(Clerk, models.DO_NOTHING)
-    book = models.ForeignKey(Books, models.DO_NOTHING)
-    import_price = models.DecimalField(decimal_places=2, max_digits=10)
-    quantity = models.IntegerField(default=10)
+class BookOrder(models.Model):
+    book = models.ForeignKey(Books, models.CASCADE)
+    cart = models.ForeignKey(User, models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
 ```
 
 * 书本相关
@@ -151,6 +154,13 @@ class Clerk(models.Model):
     # 这里的想法是不允许 signup 只能通过 superuser 创建后使用 default 密码跳转到改密中心
     def default_password(self):
         return 'sbpj'+self.clerk_id
+
+
+class Import_Order(models.Model):
+    clerk = models.ForeignKey(Clerk, models.DO_NOTHING)
+    book = models.ForeignKey(Books, models.DO_NOTHING)
+    import_price = models.DecimalField(decimal_places=2, max_digits=10)
+    quantity = models.IntegerField(default=10)
 
 
 # add by super user
@@ -334,7 +344,7 @@ class Finance(models.Model):
 ## 五、特色和创新点
 * 实现了角色特权分配
 * 在一开始就考虑到事务（ 虽然只是非常粗暴的将事务写在了 views 上）
-* 以及挂载在自己的服务器上 （ 努力实现中 ）
+* 以及挂载在自己的[服务器](http://bookstore-pj.guanduochen.xyz/)上 （ 好吧我就是懒不想挂载，要用的时候喊我以下我把它打卡~   and 请不要多人上线，会死亡的，and 不要尝试危险操作，爆 debug 界面我不管了~）
 * 实现了页面自适应（当然我没在手机上登陆过，我仅仅在 google 游览器中按 F12 观察过）
   
   ![adapt1](./static/common/readme/adapt1.png)
@@ -345,6 +355,10 @@ class Finance(models.Model):
 github + Google + StackOverflow + cnblog + csdn + djangoproject + mdui.org + W3C...... + 陈冠多
 ## 七、提交文件说明
 提交的压缩包应该存有我放入的所有数据，所以可以直接跑起来（或者你可以再创建一个新的用户啥的，嗯）
+
+
+
+请不要尝试危险操作！
 
 
 ## 八、实验总结
